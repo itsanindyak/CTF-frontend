@@ -16,7 +16,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="relative  md:flex items-center justify-between  bg-gradient-to-r from-[#43392C] to-[#A9906F] ">
+    <div className="relative font-[Unlock]  md:flex items-center justify-between  bg-gradient-to-r from-[#43392C] to-[#A9906F] ">
       <div className="max-w-7xl md:w-screen flex items-center justify-between mx-auto px-4 sm:px-6 lg:px-8">
         {/* logo */}
 
