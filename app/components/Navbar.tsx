@@ -75,7 +75,7 @@ const Navbar = () => {
 
       {/* Mobile menu, show/hide based on menu state */}
       {menuOpen && (
-        <div className="md:hidden">
+        <div className=" absolute z-100 w-full md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-r from-[#43392C] to-[#A9906F] shadow-inner">
             {navItems.map((item, index) => (
               <a
