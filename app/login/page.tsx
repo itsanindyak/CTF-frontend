@@ -6,20 +6,25 @@ const page = () => {
   return (
     <div className=" pb-7 relative min-h-screen  flex flex-row overflow-hidden bg font-[Unlock]">
       <div className=" pt-4 w-11/12 lg:w-9/12 flex flex-col items-center gap-y-2 bg-[#F5F0E8] rounded-br-4xl">
-        <div className="my-8 flex w-10/12 md:w-full justify-center items-center gap-x-2.5">
+        <div className="my-8 flex flex-col md:flex-row w-8/12 md:w-full justify-center items-center gap-x-5 gap-y-2.5">
           <Image src="/Xpedition.png" width={200} height={200} alt="logo" />
-          <p>By</p>
-          <Image
-            src="/sccse_logo.png"
-            width={100}
-            height={100}
-            alt="logo"
-            className=""
-          />
+
+          <div className="w-full md:w-fit flex justify-end gap-x-2 md:gap-x-5">
+            <p>By</p>
+            <Image
+              src="/sccse_logo.png"
+              width={120}
+              height={120}
+              alt="logo"
+              className=""
+            />
+          </div>
         </div>
 
         <div className="p-12 w-11/12 sm:w-9/12 flex flex-col gap-y-3 sm:gap-y-4">
-          <p className="pb-6 text-3xl sm:text-4xl md:text-5xl font-[Unlock]">Login</p>
+          <p className="pb-6 text-3xl sm:text-4xl md:text-5xl font-[Unlock]">
+            Login
+          </p>
           <LoginForm />
         </div>
       </div>
