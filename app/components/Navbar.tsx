@@ -15,7 +15,7 @@ const Navbar = () => {
     { name: "Leaderboard", path: "/leaderboard" },
   ];
 
-  const hideNavbarRoutes = ["/login"];
+  const hideNavbarRoutes = ["/login","/register"];
 
   if (hideNavbarRoutes.includes(pathname)) return null;
 
