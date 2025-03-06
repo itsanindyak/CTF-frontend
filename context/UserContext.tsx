@@ -1,6 +1,5 @@
 "use client";
 
-import { error } from "console";
 import {
   createContext,
   ReactNode,

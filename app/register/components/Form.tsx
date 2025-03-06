@@ -7,14 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/Form";
+import { Form, FormControl, FormField, FormItem } from "@/components/Form";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // Define form schema with validation
 const formSchema = z.object({
@@ -39,7 +36,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function SignUpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -73,19 +70,34 @@ export default function SignUpForm() {
     }
   };
 
-  
+  const signup = async (data: FormValues) => {
+    const backendURL = process.env.URL 
+    if(!backendURL){
+      throw new Error("Please set backend url in enviourment")
+    }
+    try {
+      axios.post(`${backendURL}`, data).then((responce) => {
+        // console.log(responce);
+       
+        localStorage.setItem("TOKEN", responce.data.token);
+        toast.success(responce.data.msg);
+        setIsSubmitting(false);
+        setTimeout(() => {
+          
+          router.push("/");
+        }, 1500);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
 
-    console.log("Form data:", data);
+    signup(data);
 
-    toast.success("Login successful! Redirecting to game...");
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      form.reset();
-      // router.push('/game');
-    }, 3000);
+    // toast.success("Login successful! Redirecting to game...");
   };
 
   return (
@@ -127,7 +139,7 @@ export default function SignUpForm() {
                       type="email"
                       placeholder="example@aot.edu.in"
                       {...field}
-                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
                     />
                   </FormControl>
                 </FormItem>
@@ -143,7 +155,7 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter roll number"
                       {...field}
-                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
                     />
                   </FormControl>
                   {/* <FormMessage /> */}
@@ -163,7 +175,7 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter leader's name"
                       {...field}
-                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
                     />
                   </FormControl>
                 </FormItem>
@@ -179,7 +191,7 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter department"
                       {...field}
-                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
                     />
                   </FormControl>
                 </FormItem>
@@ -195,7 +207,7 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter year"
                       {...field}
-                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
                     />
                   </FormControl>
                 </FormItem>
