@@ -1,10 +1,21 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import "./index.css";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/register");
+    }
+  }, [router]); // Runs only once after the component mounts
+
   return (
     <div className=" pb-7 relative min-h-screen  flex flex-row overflow-hidden bg font-[Unlock]">
       <div className=" pt-4 w-11/12 lg:w-9/12 flex flex-col items-center gap-y-2 bg-[#F5F0E8] rounded-br-4xl">
@@ -22,18 +33,21 @@ const page = () => {
             />
           </div>
         </div>
-
         <div className="flex flex-col w-full h-full justify-center items-center gap-y-4">
-          <Button
-            size="lg"
-            className="bg-[#f5f5dc] text-2xl sm:text-4xl w-6/12 sm:w-7/12 text-amber-900 border border-amber-800 hover:bg-amber-100 px-8 py-2 sm:py-8 rounded-md font-medium transition-all"
-          >
-            Day 1
-          </Button>
+          <Link href="/leaderboard" className="w-6/12 sm:w-7/12">
+            <Button
+              size="lg"
+              className="w-full bg-[#f5f5dc] text-2xl sm:text-4xl text-amber-900 border border-amber-800 hover:bg-amber-100 px-8 py-2 sm:py-8 rounded-md font-medium transition-all"
+            >
+              Day 1
+            </Button>
+          </Link>
 
-          <Button className="bg-[#f5f5dc] text-2xl sm:text-4xl w-6/12 sm:w-7/12 text-amber-900 border border-amber-800 hover:bg-amber-100 px-8 py-2 sm:py-8 rounded-md font-medium transition-all">
-            Day 2
-          </Button>
+          <Link href="/day2" className="w-6/12 sm:w-7/12">
+            <Button className="w-full bg-[#f5f5dc] text-2xl sm:text-4xl text-amber-900 border border-amber-800 hover:bg-amber-100 px-8 py-2 sm:py-8 rounded-md font-medium transition-all">
+              Day 2
+            </Button>
+          </Link>
         </div>
       </div>
 
