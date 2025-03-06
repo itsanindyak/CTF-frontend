@@ -12,6 +12,13 @@ import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/select";
 
 // Define form schema with validation
 const formSchema = z.object({
@@ -23,13 +30,14 @@ const formSchema = z.object({
       message: "Email must be from aot.edu.in domain",
     }),
   leaderRollNo: z
-    .string()
-    .min(1, { message: "Team Leader Roll No is required" }),
+    .number()
+    .min(0, { message: "Put roll number correctly" })
+    .max(300, { message: "Put roll number correctly" }),
   leaderName: z.string().min(1, { message: "Team Leader name is required" }),
   leaderDepartment: z
     .string()
     .min(1, { message: "Team Leader Department is required" }),
-  leaderYear: z.string().min(1, { message: "Team Leader Year is required" }),
+  leaderYear: z.number().min(2020, { message: "Team Leader Year is required" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -45,8 +53,8 @@ export default function SignUpForm() {
       leaderName: "",
       leaderEmail: "",
       leaderDepartment: "",
-      leaderRollNo: "",
-      leaderYear: "",
+      leaderRollNo: undefined,
+      leaderYear: undefined,
     },
   });
 
@@ -71,19 +79,18 @@ export default function SignUpForm() {
   };
 
   const signup = async (data: FormValues) => {
-    const backendURL = process.env.URL 
-    if(!backendURL){
-      throw new Error("Please set backend url in enviourment")
+    const backendURL = process.env.URL;
+    if (!backendURL) {
+      throw new Error("Please set backend url in enviourment");
     }
     try {
       axios.post(`${backendURL}`, data).then((responce) => {
         // console.log(responce);
-       
+
         localStorage.setItem("TOKEN", responce.data.token);
         toast.success(responce.data.msg);
         setIsSubmitting(false);
         setTimeout(() => {
-          
           router.push("/");
         }, 1500);
       });
@@ -128,7 +135,21 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="leaderName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter leader's name"
+                      {...field}
+                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="leaderEmail"
@@ -145,7 +166,10 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
+          </div>
 
+          {/* Right Column */}
+          <div className="space-y-4">
             <FormField
               control={form.control}
               name="leaderRollNo"
@@ -162,54 +186,97 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="leaderName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter leader's name"
-                      {...field}
-                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="leaderDepartment"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter department"
-                      {...field}
-                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
-                    />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="text-lg md:text-xl p-4 h-8 md:h-11 font-light">
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-white text-lg md:text-xl">
+                      <SelectItem
+                        value="CSE"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        CSE
+                      </SelectItem>
+                      <SelectItem
+                        value="ECE"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        ECE
+                      </SelectItem>
+                      <SelectItem
+                        value="EE"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        EE
+                      </SelectItem>
+                      <SelectItem
+                        value="EEE"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        EEE
+                      </SelectItem>
+                      <SelectItem
+                        value="ME"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        ME
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="leaderYear"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter year"
-                      {...field}
-                      className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
-                    />
-                  </FormControl>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    defaultValue={field.value ? String(field.value) : undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="text-lg md:text-xl p-4 h-8 md:h-11 font-light">
+                        <SelectValue placeholder="Select year" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-white text-lg md:text-xl">
+                      <SelectItem
+                        value="2024"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        2024
+                      </SelectItem>
+                      <SelectItem
+                        value="2023"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        2023
+                      </SelectItem>
+                      <SelectItem
+                        value="2022"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        2022
+                      </SelectItem>
+                      <SelectItem
+                        value="2021"
+                        className="text-lg md:text-xl font-[Unlock]"
+                      >
+                        2021
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
