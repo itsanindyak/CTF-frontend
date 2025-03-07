@@ -11,7 +11,7 @@ const page = () => {
   
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("TOKEN");
     if (!token) {
       router.push("/register");
     }

@@ -79,7 +79,7 @@ export default function SignUpForm() {
   };
 
   const signup = async (data: FormValues) => {
-    const backendURL = process.env.URL;
+    const backendURL = process.env.NEXT_PUBLIC_URL;
     if (!backendURL) {
       throw new Error("Please set backend url in enviourment");
     }
@@ -90,9 +90,7 @@ export default function SignUpForm() {
         localStorage.setItem("TOKEN", responce.data.token);
         toast.success(responce.data.msg);
         setIsSubmitting(false);
-        setTimeout(() => {
-          router.push("/");
-        }, 1500);
+        router.push("/")
       });
     } catch (error) {
       console.log(error);
@@ -181,6 +179,7 @@ export default function SignUpForm() {
                       placeholder="Enter roll number"
                       {...field}
                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      value={field.value ?? ""}
                       onChange={(e) =>
                         field.onChange(
                           e.target.value ? Number(e.target.value) : undefined
