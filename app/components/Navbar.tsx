@@ -1,13 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { Button } from "@/components/Button";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [islogin, setIsLogin] = useState(false);
   const navItems = [
     { name: "Rules", path: "/" },
     { name: "Question", path: "/" },
@@ -15,9 +18,16 @@ const Navbar = () => {
     { name: "Leaderboard", path: "/leaderboard" },
   ];
 
-  const hideNavbarRoutes = ["/login","/register","/"];
+  useEffect(() => {
+    setIsLogin(!!localStorage.getItem("TOKEN"));
+  }, []);
 
-  if (hideNavbarRoutes.includes(pathname)) return null;
+  if (["/login", "/register", "/"].includes(pathname)) return null;
+
+  const logout = () => {
+    localStorage.removeItem("TOKEN");
+    router.push("/register");
+  };
 
   return (
     <div className="relative font-[Unlock]  md:flex items-center justify-between  bg-gradient-to-r from-[#43392C] to-[#A9906F] ">
@@ -54,13 +64,23 @@ const Navbar = () => {
         {/* Login */}
 
         <div className=" w-3/12 md:flex hidden justify-center gap-x-4">
-          <Link
-            href="/login"
-            className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
-          >
-            {/* change the login to png */}
-            Log in
-          </Link>
+          {islogin ? (
+            <Button
+              onClick={logout}
+              className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
+            >
+              {/* change the login to png */}
+              Log out
+            </Button>
+          ) : (
+            <Link
+              href="/login"
+              className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
+            >
+              {/* change the login to png */}
+              Log in
+            </Link>
+          )}
         </div>
 
         {/* Hamburger Button - Only Visible on Mobile */}
