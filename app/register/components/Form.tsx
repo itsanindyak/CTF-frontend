@@ -177,9 +177,15 @@ export default function SignUpForm() {
                 <FormItem>
                   <FormControl>
                     <Input
+                      type="numebr"
                       placeholder="Enter roll number"
                       {...field}
                       className="text-lg md:text-xl p-4 h-8 md:h-11 font-light"
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) : undefined
+                        )
+                      }
                     />
                   </FormControl>
                   {/* <FormMessage /> */}
