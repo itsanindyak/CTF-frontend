@@ -10,22 +10,13 @@ const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [islogin, setIsLogin] = useState(false);
+
   const navItems = [
     { name: "Rules", path: "/" },
     { name: "Question", path: "/" },
     { name: "Convenors", path: "/" },
     { name: "Leaderboard", path: "/leaderboard" },
   ];
-
-  // ✅ Inject token into the HTML before hydration
-
-  // ✅ Read the token before first render to prevent flickering
-  useEffect(() => {
-    document.documentElement.dataset.token =
-      localStorage.getItem("TOKEN") || "";
-    setIsLogin(!!document.documentElement.dataset.token);
-  }, []);
 
   if (["/login", "/register", "/"].includes(pathname)) return null;
 
@@ -69,23 +60,13 @@ const Navbar = () => {
         {/* Login */}
 
         <div className=" w-3/12 md:flex hidden justify-center gap-x-4">
-          {islogin ? (
-            <Button
-              onClick={logout}
-              className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
-            >
-              {/* change the login to png */}
-              Log out
-            </Button>
-          ) : (
-            <Link
-              href="/login"
-              className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
-            >
-              {/* change the login to png */}
-              Log in
-            </Link>
-          )}
+          <Button
+            onClick={logout}
+            className="px-3 py-1 rounded-lg border-2 bg-[#35452B]/30 border-white text-white"
+          >
+            {/* change the login to png */}
+            Log out
+          </Button>
         </div>
 
         {/* Hamburger Button - Only Visible on Mobile */}
