@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import { Toaster } from "sonner";
 import { UserProvider } from "@/context/UserContext";
+import { SocketProvider } from "@/context/SocketContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className={`antialiased`}>
-          <Navbar />
-          {children}
-          <Toaster richColors />
-        </body>
+        <SocketProvider>
+          <body className={`antialiased`}>
+            <Navbar />
+            {children}
+            <Toaster richColors />
+          </body>
+        </SocketProvider>
       </UserProvider>
     </html>
   );
