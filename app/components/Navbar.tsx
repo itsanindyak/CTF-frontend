@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useServerInsertedHTML } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/Button";
 
@@ -18,15 +18,20 @@ const Navbar = () => {
     { name: "Leaderboard", path: "/leaderboard" },
   ];
 
+  // ✅ Inject token into the HTML before hydration
+
+  // ✅ Read the token before first render to prevent flickering
   useEffect(() => {
-    setIsLogin(!!localStorage.getItem("TOKEN"));
+    document.documentElement.dataset.token =
+      localStorage.getItem("TOKEN") || "";
+    setIsLogin(!!document.documentElement.dataset.token);
   }, []);
 
   if (["/login", "/register", "/"].includes(pathname)) return null;
 
   const logout = () => {
     localStorage.removeItem("TOKEN");
-    router.push("/register");
+    router.push("/login");
   };
 
   return (
