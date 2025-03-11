@@ -1,39 +1,43 @@
+"use client"
 import React from "react";
 import "./index.css";
 import Image from "next/image";
+import { useSocket } from "@/context/SocketContext";
 
-interface tableRowData {
+export interface tableRowData {
   position: number;
   team: string;
-  points: string;
+  Points: string;
 }
 
 const page = () => {
-  const tableData: tableRowData[] = [
-    { position: 1, team: "ThunderHub", points: "450" },
-    { position: 2, team: "SkyNet", points: "420" },
-    { position: 3, team: "BlazeCrew", points: "390" },
-    { position: 4, team: "EchoPulse", points: "360" },
-    { position: 5, team: "FrostByte", points: "340" },
-    { position: 6, team: "QuantumLeap", points: "320" },
-    { position: 7, team: "SolarFlare", points: "300" },
-    { position: 8, team: "NeonWave", points: "280" },
-    { position: 9, team: "GigaForce", points: "260" },
-    { position: 10, team: "PixelStorm", points: "240" },
-    { position: 11, team: "VortexSync", points: "220" },
-    { position: 12, team: "IronPeak", points: "200" },
-    { position: 13, team: "CloudRiser", points: "180" },
-    { position: 14, team: "AquaPulse", points: "160" },
-    { position: 15, team: "StarForge", points: "140" },
-    { position: 16, team: "LunarShift", points: "120" },
-    { position: 17, team: "FireGrid", points: "100" },
-    { position: 18, team: "WindChaser", points: "80" },
-    { position: 19, team: "EarthCore", points: "60" },
-    { position: 20, team: "CosmoLink", points: "40" },
-  ];
+
+  const {tableData}= useSocket()
+  // const tableData: tableRowData[] = [
+  //   { position: 1, team: "ThunderHub", points: "450" },
+  //   { position: 2, team: "SkyNet", points: "420" },
+  //   { position: 3, team: "BlazeCrew", points: "390" },
+  //   { position: 4, team: "EchoPulse", points: "360" },
+  //   { position: 5, team: "FrostByte", points: "340" },
+  //   { position: 6, team: "QuantumLeap", points: "320" },
+  //   { position: 7, team: "SolarFlare", points: "300" },
+  //   { position: 8, team: "NeonWave", points: "280" },
+  //   { position: 9, team: "GigaForce", points: "260" },
+  //   { position: 10, team: "PixelStorm", points: "240" },
+  //   { position: 11, team: "VortexSync", points: "220" },
+  //   { position: 12, team: "IronPeak", points: "200" },
+  //   { position: 13, team: "CloudRiser", points: "180" },
+  //   { position: 14, team: "AquaPulse", points: "160" },
+  //   { position: 15, team: "StarForge", points: "140" },
+  //   { position: 16, team: "LunarShift", points: "120" },
+  //   { position: 17, team: "FireGrid", points: "100" },
+  //   { position: 18, team: "WindChaser", points: "80" },
+  //   { position: 19, team: "EarthCore", points: "60" },
+  //   { position: 20, team: "CosmoLink", points: "40" },
+  // ];
 
   return (
-    <div className="h-fit bg-amber-50 p-10 ">
+    <div className="h-screen bg-amber-50 p-10 ">
       <div className="flex flex-col items-center justify-center ">
         <div className="w-full m-[50px] text-black flex justify-center gap-x-3">
           <Image
@@ -73,8 +77,8 @@ const page = () => {
                     <td className="py-3 px-6 text-black font-light">
                       {row.position}
                     </td>
-                    <td className="py-3 px-6 text-black ">{row.team}</td>
-                    <td className="py-3 px-6 text-black ">{row.points}</td>
+                    <td className="py-3 px-6 text-black ">{row.Team_Name}</td>
+                    <td className="py-3 px-6 text-black ">{row.Points}</td>
                   </tr>
                 ))}
               </tbody>
