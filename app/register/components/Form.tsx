@@ -87,13 +87,36 @@ export default function SignUpForm() {
       axios.post(`${backendURL}`, data).then((responce) => {
         // console.log(responce);
 
-        localStorage.setItem("TOKEN", responce.data.token);
         toast.success(responce.data.msg);
         setIsSubmitting(false);
-        router.push("/")
+        router.push("/login");
       });
     } catch (error) {
-      console.log(error);
+      // Handle both Axios errors and other potential errors
+      setIsSubmitting(false); // Always reset submitting state
+
+      let errorMessage = "An unexpected error occurred";
+
+      if (axios.isAxiosError(error)) {
+        // Handle Axios-specific errors
+        errorMessage =
+          error.response?.data?.msg ||
+          error.message ||
+          "Failed to connect to server";
+      } else if (error instanceof Error) {
+        // Handle generic errors
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
+
+      console.error("Signup error:", {
+        message: errorMessage,
+        ...(axios.isAxiosError(error) && {
+          status: error.response?.status,
+          data: error.response?.data,
+        }),
+      });
     }
   };
 
